@@ -1,0 +1,12 @@
+[package]
+name = "proyecto2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+tokio-postgres = { version = "0.7", features = ["with-uuid-1", "with-chrono-0_4"] }
+postgres = { version = "0.19", features = ["with-uuid-1"] }
+rand = "0.8"
+chrono = { version = "0.4", features = ["serde"] }
+futures = "0.3"

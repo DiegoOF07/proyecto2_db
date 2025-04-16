@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: Proyecto2_DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/ddl.sql:/docker-entrypoint-initdb.d/01_ddl.sql
+      - ./database/data.sql:/docker-entrypoint-initdb.d/02_data.sql
+    networks:
+      - appnet
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: proyecto2
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+volumes:
+  pgdata: {}
+
+networks:
+  appnet:
