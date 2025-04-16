@@ -10,6 +10,11 @@ services:
       POSTGRES_DB: Proyecto2_DB
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./database/ddl.sql:/docker-entrypoint-initdb.d/01_ddl.sql
@@ -23,7 +28,8 @@ services:
       dockerfile: Dockerfile
     command: proyecto2
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - appnet
 
